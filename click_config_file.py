@@ -36,7 +36,7 @@ class configobj_provider:
     dict
         A dictionary containing the configuration parameters.
     """
-    def __call__(self, file_path, cmd_name):
+    def __call__(self, ctx,file_path, cmd_name):
         config = configobj.ConfigObj(file_path, unrepr=self.unrepr)
         if self.section:
             config = config[self.section].dict()
@@ -84,7 +84,7 @@ def configuration_option(*param_decls, **attrs):
             if not value:
                 value = default_value
             try:
-                config = provider(value, cmd_name)
+                config = provider(ctx,value, cmd_name)
             except Exception as e:
                 raise click.BadOptionUsage(
                     "Error reading configuration file: {}".format(e), ctx)

@@ -193,7 +193,7 @@ def test_exists_true(runner, tmpdir):
 
 
 def test_custom_provider_nofile(runner):
-    def mock_provider(path, name):
+    def mock_provider(ctx,path, name):
         assert name == 'cli'
         return {'who': 'World'}
 
@@ -211,7 +211,7 @@ def test_custom_provider_nofile(runner):
 
 
 def test_custom_provider_raises_exception(runner):
-    def mock_provider(path, name):
+    def mock_provider(ctx,path, name):
         assert name == 'cli'
         raise click.BadOptionUsage('Provider')
 
@@ -229,7 +229,7 @@ def test_custom_provider_raises_exception(runner):
 
 
 def test_custom_provider(runner, cfgfile):
-    def mock_provider(path, name):
+    def mock_provider(ctx,path, name):
         assert path == str(cfgfile.realpath())
         assert name == 'cli'
         return {'whom': 'World'}

@@ -20,7 +20,7 @@ def test_call_missing_file(tmpdir):
     nofile = tmpdir.join("nosuchfile")
     provider = configobj_provider()
     with pytest.raises(py.error.ENOENT):
-        provider(nofile, 'name')
+        provider(None,nofile, 'name')
 
 
 def test_call_broken_file(tmpdir):
@@ -28,14 +28,14 @@ def test_call_broken_file(tmpdir):
     conffile.write("Ceci n'est pas un ConfigObj.")
     provider = configobj_provider()
     with pytest.raises(configobj.ParseError):
-        provider(conffile, 'name')
+        provider(None,conffile, 'name')
 
 
 def test_call_nosection(tmpdir):
     conffile = tmpdir.join('config')
     conffile.write("testvalue = True")
     provider = configobj_provider()
-    rv = provider(conffile, 'name')
+    rv = provider(None,conffile, 'name')
     assert 'testvalue' in rv
     assert rv['testvalue'] is True
 
@@ -47,6 +47,6 @@ def test_call_section(tmpdir):
                    testvalue = True
                    """)
     provider = configobj_provider(section='mysection')
-    rv = provider(conffile, 'name')
+    rv = provider(None,conffile, 'name')
     assert 'testvalue' in rv
     assert rv['testvalue'] is True
